@@ -1,0 +1,34 @@
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<head>
+<script>
+	$(function() {
+		$("#load").on("click", function() {
+			//$("div").html("<button id='newButton'>ok</button>");
+			$.ajax({
+				type : "get", //전송타입
+				url : "./testDB.jsp",//서버요청대상파일
+				dataType : "text", //응답타입
+				success : function(data, status, xhr) {
+					$("#result").text(data);
+				},
+				error : function(xhr, status, e) {
+					console.log("error", e);
+					console.log("status", status);
+				}
+			});
+		});
+
+	});
+
+
+</script>
+</head>
+
+<body>
+	<button id="load">new</button>
+	<div id="result"></div>
+</body>
+
+

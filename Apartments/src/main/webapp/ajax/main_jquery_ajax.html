@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>테스트 JSON</title>
+<!-- <link rel="stylesheet" href="./css/bootstrap.css" /> -->
+<!-- <link rel="stylesheet" href="./css/bootstrap.min.css" /> -->
+
+<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script>
+
+
+
+// 	var xhrObject; // XMLhttpRequest객체를 저장할 변수, 전역변수선언
+	
+// 	function createXHR() 
+// 	{
+// 		if(window.ActiveXObject)
+// 		{ // 웹브라우저가 IE5.0, 6.0인경우
+// 			xhrObject = new ActiveXObject("Microsoft.XMLHTTP"); // XMLHttpRequest 객체 생성
+// 		}
+// 		else if(window.XMLHttpRequest)
+// 		{ // IE7.0, Firefox, safari, opera ..etc
+// 			xhrObject = new XMLHttpRequest();
+// 		}
+// 	}
+	
+// 	function getData()//json 요청
+// 	{		
+// 		const form_name = "form_main";
+// 		const user_id = document.forms[form_name].elements["txt_user_id"].value;
+		
+// 		createXHR(); // createXHR() 메소드 호출
+		
+// 		//const url = "./testFile.jsp"; //요청 url 설정
+// 		const url = "./testDB.jsp"; //요청 url 설정
+		
+// 		const reqparam = "user_id="+user_id;
+// 		xhrObject.onreadystatechange = resGetData; // 다되면 실행할 함수 등록(호출 아님. 역호출)
+// 		xhrObject.open("Post", url, "true"); //서버의 요청설정 -url변수에 설정된 리소스를 요청할 준비
+// 		xhrObject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+// 		xhrObject.send(reqparam);
+// 	}
+
+// 	function resGetData()
+// 	{
+// 		if(xhrObject.readyState == 4)
+// 		{
+// 			if(xhrObject.status == 200)
+// 			{
+// 				//alert("2");
+				
+// 				const result = xhrObject.responseText;
+//  				//alert(result);
+				
+//  				const objRes = eval("("+result+")");
+//  				//alert(objRes);
+				
+//  				const num = objRes.datas.length;
+//  				let res = "<table class='table'>";
+//  				const resDiv = document.getElementById("div_res");
+				
+// 				if(num<1)
+// 				{
+// 					res += "<tr><td'>검색 결과가 없습니다.</td></tr>";
+// 				}
+// 				else
+// 				{
+// 					for(let i=0; i<num; i++)
+// 					{
+// 						const user_id = objRes.datas[i].ID;
+// 						const user_name = objRes.datas[i].NAME;
+// 						const user_phone = objRes.datas[i].PHONE;
+// 						const user_grade = objRes.datas[i].GRADE;
+// 						const user_time = objRes.datas[i].WRITE_TIME;
+						
+// 						res +="<tr class='table-active'>";
+// 						res +="<td>"+user_id+"</td>";
+// 						res +="<td><br>"+user_name+"<br></td>";
+// 						res +="<td><br>"+user_phone+"<br></td>";
+// 						res +="<td><br>"+user_grade+"<br></td>";
+// 						res +="<td><br>"+user_time+"<br></td>";
+// 						res +="</tr>";
+// 					}
+// 				}
+// 				res += "</table>";
+				
+// 				//alert(res);
+// 				resDiv.innerHTML = res;
+// 			}
+// 		}
+// 	}
+// 	function searchData()
+// 	{
+	
+// 		//alert("111")
+// 		const form_name = "form_main";
+// 		const user_id = document.forms[form_name].elements["txt_user_id"].value;
+// 		//alert("123");
+// // 		if(user_id == "")
+// // 		{			
+			
+// // 			document.forms[form_name].elements["txt_user_id"].focus();
+// // 			return;
+// // 		}
+// // 		else
+// // 		{
+// 			//alert("user_id ");
+// 			getData();
+// // 		}		
+// 	}
+	
+</script>
+
+
+</head>
+<body>
+<script>
+ $("#btnSearch").click(function(){
+ 
+            // json 형식으로 데이터 set
+            var params = {
+                      user_id      : $("#user_id").val()
+                    , user_name       : $("#user_name").val()
+                    , user_phone       : $("#user_phone").val()
+                    , user_grade    : $("#user_grade").val()
+            }
+                
+            // ajax 통신
+            $.ajax({
+                type : "POST",            
+                url : "./testDB.jsp",      
+                data : params,            
+                success : function(res){ 
+                    // 응답코드 > 0000
+                    alert(res.code);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                    alert("통신 실패.")
+                }
+            });
+        });
+ </script>
+ 
+	<form name="form_main" onSubmit="javascript:return false;">
+	<div class="container">
+	    <div class="row">
+	        <div class="col-xs-12"> -</div>
+	    </div>
+	    <div class="row">
+	        <div class="col-sm-6 col-md-3"></div>
+	        <div class="col-sm-6">   
+	        	<div class="input-group mb-3">
+		      		<input type="text" name='txt_user_id' class="form-control" placeholder="ID 입력바람!" aria-label="Recipient's username" aria-describedby="button-addon2" onkeyup='javascript:;'>
+		      		<button class="btn btn-primary" type="button" id="btnSearch"  >Button</button>
+		    	</div>
+		    	<div id='div_res' class="input-group mb-3" >
+		    	
+		    	</div>
+    		</div>
+	        <div class="col-md-3"></div>
+	    </div>
+	    <div class="row">
+	        <div class="col-xs-12"></div>
+	    </div>
+	</div>
+ </form>
+   
+</body>
+</html>

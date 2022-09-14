@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    
+	<!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+        
+    <title>Apartments - Find your best apartment!</title>
+</head>
+<body>
+    <!-- Upper Navbar -->
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark border-bottom shadow-sm sticky-top">
+  		<h3 class="my-0 mr-md-auto font-weight-bold text-light">Apartments</h3>
+  		<h6 class="my-0 mr-md-auto text-light font-italic"> Find your best apartment!</h6>
+	  	<nav class="my-2 my-md-0 mr-md-3">
+		    <a class="p-2 text-light" href="#">아파트 찾기</a>
+		    <a class="p-2 text-light" href="#">질문 게시판</a>
+		    <!-- 로그인 시 보여지는 메뉴 -->
+		    <a class="p-2 text-light" href="#">[xx]님 접속중!</a>
+		    <a class="p-2 text-light" href="#">회원정보</a>
+	  	</nav>
+	  		<!-- 로그인 아닐때 보여지는 메뉴 -->
+  		<a class="btn btn-primary mr-2" href="#">Log in</a>
+  		<a class="btn btn-danger" href="#">Sign up</a>
+	</div>
+    
+    <!-- Middle Section 3:9=사이드바:본문 예시-->
+	<!-- <div class="container-fluid">
+        <div class="row">
+            Left Side-bar
+            <div class="col-md-3 bg-light">
+                <h3>첫번째 열의 제목</h3>
+                <p>첫번째 열의 본문</p>
+                <p>아래 링크 참고 Sidebars</p>
+                <P>https://getbootstrap.com/docs/5.0/examples/sidebars/#</P>
+                              
+                
+            </div>
+            
+            Main Articles
+            <div class="col-md-9">
+                <h3>두번째 열의 제목</h3>
+                <p>두번째 열의 본문</p>
+            </div>
+        </div>
+	</div> -->
+	
+<div class="container-fluid">
+  <div class="row">
+  	<!-- Left Navigator -->
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="sidebar-sticky pt-3">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted font-weight-bold">
+          특별시/광역시/특별자치시
+        </h6>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              서울특별시 
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              부산광역시
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              대구광역시
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              인천광역시
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              광주광역시
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              대전광역시
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              울산광역시
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              세종특별자치시
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted font-weight-bold">
+          도/특별자치도
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              경기도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              강원도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              충청북도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              충청남도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              경상북도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              경상남도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              전라북도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              전라남도
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link ml-2" href="#">
+              제주특별자치도
+            </a>
+          </li>
+        </ul>
+        
+        
+      </div>
+    </nav>
+
+	<!-- Main Article -->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+      
+      <!-- Main title bar -->
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3 class="font-weight-bold">선택된 광역지자체 표시</h3>
+        <!-- <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+          </button>
+        </div> -->
+      </div>
+      <div>
+      	<p>시군구 리스트 나열</p>
+      	<br/>
+      </div>
+      국토교통부_공동주택가격정보서비스 xml/json
+      https://www.data.go.kr/data/15057988/openapi.do
+      
+      국토교통부_아파트매매 실거래 상세 자료 xml
+	  https://www.data.go.kr/data/15057511/openapi.do
+	        
+      국토교통부_공동주택 기본 정보제공 서비스 xml					>>> 활용신청 완료
+      https://www.data.go.kr/data/15058453/openapi.do
+      
+      국토교통부_공동주택 단지 목록제공 서비스 xml		
+      https://www.data.go.kr/data/15057332/openapi.do
+      
+      
+      <!-- Main table -->
+      <h3 class="font-weight-bold">선택된 시군구-읍면동 표시</h3>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>아파트명</th>
+              <th>주소</th>
+              <th>세대수</th>
+              <th>기타항목</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1,001</td>
+              <td>random</td>
+              <td>data</td>
+              <td>placeholder</td>
+              <td>text</td>
+            </tr>
+            <tr>
+              <td>1,002</td>
+              <td>placeholder</td>
+              <td>irrelevant</td>
+              <td>visual</td>
+              <td>layout</td>
+            </tr>
+            <tr>
+              <td>1,003</td>
+              <td>data</td>
+              <td>rich</td>
+              <td>dashboard</td>
+              <td>tabular</td>
+            </tr>
+            <tr>
+              <td>1,003</td>
+              <td>information</td>
+              <td>placeholder</td>
+              <td>illustrative</td>
+              <td>data</td>
+            </tr>
+            <tr>
+              <td>1,004</td>
+              <td>text</td>
+              <td>random</td>
+              <td>layout</td>
+              <td>dashboard</td>
+            </tr>
+            <tr>
+              <td>1,005</td>
+              <td>dashboard</td>
+              <td>irrelevant</td>
+              <td>text</td>
+              <td>placeholder</td>
+            </tr>
+            <tr>
+              <td>1,006</td>
+              <td>dashboard</td>
+              <td>illustrative</td>
+              <td>rich</td>
+              <td>data</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+	
+	
+	<!-- Footer -->
+    <footer>
+
+    </footer>
+   
+</body>
+</html>

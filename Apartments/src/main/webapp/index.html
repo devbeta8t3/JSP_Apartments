@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 	<!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -26,148 +26,288 @@
     
 	<!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
+    
+    <!-- Javascript -->
+    <script type="text/javascript">
+		var xhrObject; // XMLhttpRequest객체를 저장할 변수, 전역변수선언
+		let doValue;
+		let siValue;
+		
+		function createXHR() {
+			if(window.ActiveXObject) { // 웹브라우저가 IE5.0, 6.0인경우
+				xhrObject = new ActiveXObject("Microsoft.XMLHTTP"); // XMLHttpRequest 객체 생성
+			}
+			else if(window.XMLHttpRequest) { // IE7.0, Firefox, safari, opera ..etc
+				xhrObject = new XMLHttpRequest();
+			}
+		}
+		
+		/* 시군구 이름을 가져오는 함수 */
+		function getSiData(doName) {	//json 요청
+			doValue = doName;
+			//const doName = document.getElementById("doSelect");	//시도명을 가져와서 저장 but, object HTMLSelectElement로 넘어옴.
+			//const doName = doSelect.options[doSelect.selectedIndex].value;
+			
+			createXHR(); // createXHR() 메소드 호출
+			
+			const url = "./siDB.jsp"; //요청 url 설정(시군구 db)
+			
+			const reqparam = "시도명=" +doName;	// 요청 파라미터 설정: 시도명
+			xhrObject.onreadystatechange = resGetSiData; // 다되면 실행할 함수 등록(호출 아님. 역호출)
+			xhrObject.open("Post", url, "true"); //서버의 요청설정 -url변수에 설정된 리소스를 요청할 준비
+			xhrObject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+			xhrObject.send(reqparam);
+		}
+		
+		/* json 형식으로 만들어진 시군구db에서 시군구명을 가져오고 html에 쓰기(select-option) */
+		function resGetSiData() {
+			if(xhrObject.readyState == 4) {
+				if(xhrObject.status == 200) {
+					//alert("2");	// 상태 확인
+					
+					const result = xhrObject.responseText;
+	 				//alert(result);	// 결과값 확인
+					
+	 				const objRes = eval("("+result+")");
+	 				//alert(objRes);	// 객체 확인
+					
+	 				const num = objRes.datas.length;	// num : 배열의 길이
+	 				let res = "<option selected value=''>시/군/구를 선택하세요.</option>";
+					
+					if(num<1) {
+						res += "<option>데이타가 없습니다.</option>";
+					}
+					else {
+						for(let i=0; i<num; i++) {
+							//const dongCode = objRes.datas[i].법정동코드;
+							const siName = objRes.datas[i].시군구명;
+							//const user_id = objRes.datas[i].ID;
+							//const user_name = objRes.datas[i].NAME;
+							//const user_phone = objRes.datas[i].PHONE;
+							//const user_grade = objRes.datas[i].GRADE;
+							//const user_time = objRes.datas[i].WRITE_TIME;
+							res +="<option value='"+siName+"'>"+siName+"</option>";
+							//res +="<tr class='table-active'>";
+							//res +="<td>"+user_id+"</td>";
+							//res +="<td><br>"+user_name+"<br></td>";
+							//res +="<td><br>"+user_phone+"<br></td>";
+							//res +="<td><br>"+user_grade+"<br></td>";
+							//res +="<td><br>"+user_time+"<br></td>";
+							//res +="</tr>";
+						}
+					}
+					//res += "</table>";
+					
+					//alert(res);
+					document.getElementById("siSelect").innerHTML = res;
+					
+					
+				}
+			}
+		}
+		
+		/* 읍면동 이름을 가져오는 함수 */
+		function getDongData(siName) {	//json 요청
+			siValue = siName; 
+			//const doName = document.getElementById("doSelect").value;	//시도명을 가져와서 저장 but, object HTMLSelectElement로 넘어옴.
+			//const siName = siSelect.options[siSelect.selectedIndex].value;
+			
+			createXHR(); // createXHR() 메소드 호출
+			
+			const url = "./dongDB.jsp"; //요청 url 설정(읍면동 db)
+			
+			const reqparam = "시군구명=" +siName+ "&시도명=" +doValue;	// 요청 파라미터 설정: 시군구명, 시도명
+			xhrObject.onreadystatechange = resGetDongData; // 다되면 실행할 함수 등록(호출 아님. 역호출)
+			xhrObject.open("Post", url, "true"); //서버의 요청설정 -url변수에 설정된 리소스를 요청할 준비
+			xhrObject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+			xhrObject.send(reqparam);
+		}
+		
+		/* json 형식으로 만들어진 시군구db에서 시군구명을 가져오고 html에 쓰기(select-option) */
+		function resGetDongData() {
+			if(xhrObject.readyState == 4) {
+				if(xhrObject.status == 200) {
+					//alert("2");	// 상태 확인
+					
+					const result = xhrObject.responseText;
+	 				//alert(result);	// 결과값 확인
+					
+	 				const objRes = eval("("+result+")");
+	 				//alert(objRes);	// 객체 확인
+					
+	 				const num = objRes.datas.length;	// num : 배열의 길이
+	 				let res = "<option selected value=''>읍/면/동을 선택하세요.</option>";
+					
+					if(num<1) {
+						res += "<option>데이타가 없습니다.</option>";
+					}
+					else {
+						for(let i=0; i<num; i++) {
+							const dongCode = objRes.datas[i].법정동코드;
+							const dongName = objRes.datas[i].읍면동명;
+							//const user_id = objRes.datas[i].ID;
+							//const user_name = objRes.datas[i].NAME;
+							//const user_phone = objRes.datas[i].PHONE;
+							//const user_grade = objRes.datas[i].GRADE;
+							//const user_time = objRes.datas[i].WRITE_TIME;
+							res +="<option value='"+dongCode+"'>"+dongName+"</option>";
+							//res +="<tr class='table-active'>";
+							//res +="<td>"+user_id+"</td>";
+							//res +="<td><br>"+user_name+"<br></td>";
+							//res +="<td><br>"+user_phone+"<br></td>";
+							//res +="<td><br>"+user_grade+"<br></td>";
+							//res +="<td><br>"+user_time+"<br></td>";
+							//res +="</tr>";
+						}
+					}
+					//res += "</table>";
+					
+					//alert(res);
+					document.getElementById("dongSelect").innerHTML = res;
+				}
+			}
+		}
+		
+		/* 아파트 리스트를 가져오는 함수 */
+		function getAptList(dongCode) {	//json 요청
+			
+			//const doName = document.getElementById("doSelect").value;	//시도명을 가져와서 저장 but, object HTMLSelectElement로 넘어옴.
+			//const siName = siSelect.options[siSelect.selectedIndex].value;
+			
+			createXHR(); // createXHR() 메소드 호출
+			
+			const url = "./dongDB.jsp"; //요청 url 설정(읍면동 db)
+			
+			const reqparam = "시군구명=" +siName;	// 요청 파라미터 설정: 시군구명
+			xhrObject.onreadystatechange = resGetDongData; // 다되면 실행할 함수 등록(호출 아님. 역호출)
+			xhrObject.open("Post", url, "true"); //서버의 요청설정 -url변수에 설정된 리소스를 요청할 준비
+			xhrObject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+			xhrObject.send(reqparam);
+		}
+		
+		/* json 형식으로 만들어진 시군구db에서 시군구명을 가져오고 html에 쓰기(select-option) */
+		function resGetDongData() {
+			if(xhrObject.readyState == 4) {
+				if(xhrObject.status == 200) {
+					//alert("2");	// 상태 확인
+					
+					const result = xhrObject.responseText;
+	 				//alert(result);	// 결과값 확인
+					
+	 				const objRes = eval("("+result+")");
+	 				//alert(objRes);	// 객체 확인
+					
+	 				const num = objRes.datas.length;	// num : 배열의 길이
+	 				let res = "<option selected value=''>읍/면/동을 선택하세요.</option>";
+					
+					if(num<1) {
+						res += "<option>데이타가 없습니다.</option>";
+					}
+					else {
+						for(let i=0; i<num; i++) {
+							const dongCode = objRes.datas[i].법정동코드;
+							const dongName = objRes.datas[i].읍면동명;
+							//const user_id = objRes.datas[i].ID;
+							//const user_name = objRes.datas[i].NAME;
+							//const user_phone = objRes.datas[i].PHONE;
+							//const user_grade = objRes.datas[i].GRADE;
+							//const user_time = objRes.datas[i].WRITE_TIME;
+							res +="<option value='"+dongCode+"'>"+dongName+"</option>";
+							//res +="<tr class='table-active'>";
+							//res +="<td>"+user_id+"</td>";
+							//res +="<td><br>"+user_name+"<br></td>";
+							//res +="<td><br>"+user_phone+"<br></td>";
+							//res +="<td><br>"+user_grade+"<br></td>";
+							//res +="<td><br>"+user_time+"<br></td>";
+							//res +="</tr>";
+						}
+					}
+					//res += "</table>";
+					
+					//alert(res);
+					document.getElementById("dongSelect").innerHTML = res;
+				}
+			}
+		}
+	</script>
         
     <title>Apartments - Find your best apartment!</title>
 </head>
+
 <body>
-    <!-- Upper Navbar -->
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark border-bottom shadow-sm sticky-top">
-  		<h3 class="my-0 mr-md-auto font-weight-bold text-light">Apartments</h3>
-  		<h6 class="my-0 mr-md-auto text-light font-italic"> Find your best apartment!</h6>
-	  	<nav class="my-2 my-md-0 mr-md-3">
-		    <a class="p-2 text-light" href="#">아파트 찾기</a>
-		    <a class="p-2 text-light" href="#">질문 게시판</a>
-		    <!-- 로그인 시 보여지는 메뉴 -->
-		    <a class="p-2 text-light" href="#">[xx]님 접속중!</a>
-		    <a class="p-2 text-light" href="#">회원정보</a>
-	  	</nav>
-	  		<!-- 로그인 아닐때 보여지는 메뉴 -->
-  		<a class="btn btn-primary mr-2" href="#">Log in</a>
-  		<a class="btn btn-danger" href="#">Sign up</a>
-	</div>
+
+<!-- Upper Navbar -->
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark border-bottom shadow-sm sticky-top">
+	<h3 class="my-0 mr-md-auto font-weight-bold text-light">Apartments</h3>
+	<h6 class="my-0 mr-md-auto text-light font-italic"> Find your best apartment!</h6>
+	<nav class="my-2 my-md-0 mr-md-3">
+		<a class="p-2 text-light" href="#">아파트 찾기</a>
+		<a class="p-2 text-light" href="#">질문 게시판</a>
+		<!-- 로그인 시 보여지는 메뉴 : if sessionId != null 로 처리하자 ********************************todo -->
+		<a class="p-2 text-light" href="#">[xx]님 접속중!</a>
+		<a class="p-2 text-light" href="#">회원정보</a>
+		<!-- 로그인 아닐때 보여지는 메뉴 -->
+ 		<a class="btn btn-primary mr-2" href="#">Log in</a>
+ 		<a class="btn btn-danger" href="#">Sign up</a>
+	</nav>
+</div>
     
-    <!-- Middle Section 3:9=사이드바:본문 예시-->
-	<!-- <div class="container-fluid">
-        <div class="row">
-            Left Side-bar
-            <div class="col-md-3 bg-light">
-                <h3>첫번째 열의 제목</h3>
-                <p>첫번째 열의 본문</p>
-                <p>아래 링크 참고 Sidebars</p>
-                <P>https://getbootstrap.com/docs/5.0/examples/sidebars/#</P>
-                              
-                
-            </div>
-            
-            Main Articles
-            <div class="col-md-9">
-                <h3>두번째 열의 제목</h3>
-                <p>두번째 열의 본문</p>
-            </div>
-        </div>
-	</div> -->
-	
+
+<!-- Middle Section -->	
 <div class="container-fluid">
   <div class="row">
   	<!-- Left Navigator -->
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="sidebar-sticky pt-3">
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted font-weight-bold">
-          특별시/광역시/특별자치시
-        </h6>
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              서울특별시 
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              부산광역시
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              대구광역시
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              인천광역시
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              광주광역시
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              대전광역시
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              울산광역시
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              세종특별자치시
-            </a>
-          </li>
-        </ul>
-
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted font-weight-bold">
-          도/특별자치도
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              경기도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              강원도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              충청북도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              충청남도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              경상북도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              경상남도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              전라북도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              전라남도
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link ml-2" href="#">
-              제주특별자치도
-            </a>
-          </li>
-        </ul>
+        
+		<!-- 지역선택 select option -->
+		<div class="form-group">
+			
+			<p> <!-- 광역자치단체 선택 select 메뉴 -->
+			<label for="doSelect" class="form-label mt-4">광역지자체</label><br/>
+				<select class="form-select" id="doSelect" onchange="getSiData(this.value)">
+					<option value="">지역을 선택하세요.</option>
+					<optgroup label="특별시/광역시/자치시">
+						<option value="서울특별시">서울특별시</option>
+						<option value="부산광역시">부산광역시</option>
+						<option value="대구광역시">대구광역시</option>
+						<option value="인천광역시">인천광역시</option>
+						<option value="광주광역시">광주광역시</option>
+						<option value="대전광역시">대전광역시</option>
+						<option value="울산광역시">울산광역시</option>
+						<option value="세종특별자치시">세종특별자치시</option>
+					</optgroup>
+					<optgroup label="도/자치도">
+						<option value="경기도">경기도</option>
+						<option value="강원도">강원도</option>
+						<option value="충청북도">충청북도</option>
+						<option value="충청남도">충청남도</option>
+						<option value="전라북도">전라북도</option>
+						<option value="전라남도">전라남도</option>
+						<option value="경상북도">경상북도</option>
+						<option value="경상남도">경상남도</option>
+						<option value="제주특별자치도">제주특별자치도</option>
+					</optgroup>
+				</select>
+			<!-- 시군구 선택(자동) -->
+			<p>
+			<label for="siSelect" class="form-label mt-4">시/군/구</label><br/>
+				<select class="form-select" id="siSelect" onchange="getDongData(this.value)">
+				
+				</select>
+			<!-- 읍면동 선택(자동) -->
+			<p>
+			<label for="dongSelect" class="form-label mt-4">읍/면/동</label><br/>
+				<select class="form-select" id="dongSelect" onchange="getAptList(this.value)">
+				
+				</select>
+		</div> 
+		<!-- 지역 선택 끝 -->
+	
+  
+     
+     
+        
       </div>
     </nav>
 
@@ -176,7 +316,7 @@
       
       <!-- Main title bar -->
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h3 class="font-weight-bold">선택된 광역지자체 표시</h3>
+        <h3 class="font-weight-bold">선택된 동 : <span id="selectedDong"></span></h3>
         <!-- <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -206,7 +346,7 @@
       
       
       <!-- Main table -->
-      <h3 class="font-weight-bold">선택된 시군구-읍면동 표시</h3>
+      <h3 class="font-weight-bold">Sub title 표시</h3>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>

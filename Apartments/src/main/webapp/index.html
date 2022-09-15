@@ -7,22 +7,6 @@
 	
 	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
     
 	<!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -100,8 +84,7 @@
 					
 					//alert(res);
 					document.getElementById("siSelect").innerHTML = res;
-					
-					
+					document.getElementById("selectedDo").innerHTML = doValue; 
 				}
 			}
 		}
@@ -164,6 +147,8 @@
 					
 					//alert(res);
 					document.getElementById("dongSelect").innerHTML = res;
+					document.getElementById("selectedSi").innerHTML = "-" +siValue ;
+
 				}
 			}
 		}
@@ -174,19 +159,21 @@
 			//const doName = document.getElementById("doSelect").value;	//시도명을 가져와서 저장 but, object HTMLSelectElement로 넘어옴.
 			//const siName = siSelect.options[siSelect.selectedIndex].value;
 			
-			createXHR(); // createXHR() 메소드 호출
+			createXHR(); // createXHR() 메소드 호출 - xhrObject 생성
+			const key = "SsuVC2eM0t4fh8sGbUPY4DPOtZDBa4o41nCmhRT6pMn2vl%2BSqtlnLsdmzCwdPBA35zxuFbhlcOy43R4X3ZffQA%3D%3D";
+
+			const url = "http://apis.data.go.kr/1613000/AptListService2/getLegaldongAptList?bjdCode="+dongCode+"&ServiceKey="+key; //요청 url 설정(읍면동 db)
 			
-			const url = "./dongDB.jsp"; //요청 url 설정(읍면동 db)
-			
-			const reqparam = "시군구명=" +siName;	// 요청 파라미터 설정: 시군구명
-			xhrObject.onreadystatechange = resGetDongData; // 다되면 실행할 함수 등록(호출 아님. 역호출)
-			xhrObject.open("Post", url, "true"); //서버의 요청설정 -url변수에 설정된 리소스를 요청할 준비
-			xhrObject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-			xhrObject.send(reqparam);
+			//const reqparam = "bjdCode=" +dongCode;	// 요청 파라미터 설정: 시군구명
+			xhrObject.onreadystatechange = resGetAptData; // 다되면 실행할 함수 등록(호출 아님. 역호출)
+			xhrObject.open("GET", url, "true"); //서버의 요청설정 -url변수에 설정된 리소스를 요청할 준비
+			//xhrObject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+			//xhrObject.send(reqparam);
+			xhrObject.send();
 		}
 		
 		/* json 형식으로 만들어진 시군구db에서 시군구명을 가져오고 html에 쓰기(select-option) */
-		function resGetDongData() {
+		function resGetAptData() {	// xml parsing
 			if(xhrObject.readyState == 4) {
 				if(xhrObject.status == 200) {
 					//alert("2");	// 상태 확인
@@ -226,6 +213,8 @@
 					
 					//alert(res);
 					document.getElementById("dongSelect").innerHTML = res;
+					document.getElementById("selectedDong").innerHTML = doValue+ "-" +siValue+ "-" ;
+					
 				}
 			}
 		}
@@ -316,7 +305,7 @@
       
       <!-- Main title bar -->
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h3 class="font-weight-bold">선택된 동 : <span id="selectedDong"></span></h3>
+        <h3 class="font-weight-bold">선택된 동 : <span id="selectedDo"></span><span id="selectedSi"></span></h3>
         <!-- <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>

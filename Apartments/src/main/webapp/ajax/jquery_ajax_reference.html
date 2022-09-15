@@ -1,0 +1,50 @@
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<head>
+<script>
+	$(document).ready(function() {
+		$.ajax({
+			url : "requestxml.jsp",//서버요청대상파일
+			type : "GET", //전송타입
+			dataType : "xml", //응답타입
+			success : function(response) {	//통신 성공시 호출하는 함수
+				xmlParsing(response);
+			},
+			error : function(xhr, status, msg) {	// 통신 실패시 호출하는 함수
+				console.log("error : ", msg);
+				console.log("status : ", status);
+			}
+		});
+		
+		function xmlParsing(data) {
+			let inforList = '';
+			$(data).find('row').each(function(index, item){
+				//consol.log(item)
+				infoList += '
+							<tr>
+								<td>${$(this).find('SLNO').text()}</td>
+								<td>${$(this).find('ARA_NM').text()}</td>
+								<td>${$(this).find('COHIS_DIT_CD_NM').text()}</td>
+								<td>${$(this).find('LN_YR').text()}</td>
+								<td>${$(this).find('BTP_NM').text()}</td>
+							</tr>
+							';
+				$('#info').empty().append(infoList);
+				$('tr:first').css('background', 'darkgray').css('color', 'white');
+			});
+		}
+		
+	});
+
+
+</script>
+</head>
+
+<body>
+	참고사이트 https://hyewon-study-log.tistory.com/84
+	<button id="load">new</button>
+	<div id="result"></div>
+</body>
+
+

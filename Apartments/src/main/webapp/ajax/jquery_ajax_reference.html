@@ -18,19 +18,14 @@
 		});
 		
 		function xmlParsing(data) {
-			let inforList = '';
+			let inforList = "";
 			$(data).find('row').each(function(index, item){
 				//consol.log(item)
-				infoList += '
-							<tr>
-								<td>${$(this).find('SLNO').text()}</td>
-								<td>${$(this).find('ARA_NM').text()}</td>
-								<td>${$(this).find('COHIS_DIT_CD_NM').text()}</td>
-								<td>${$(this).find('LN_YR').text()}</td>
-								<td>${$(this).find('BTP_NM').text()}</td>
-							</tr>
-							';
+				// 아래 += 쓰면 안되고 = 써야됨. ${}쓰니까 안되고 ""와 +로 구분해야 동작함.   
+				infoList += "<tr>	<td>${$(this).find('SLNO').text()}</td> <td>${$(this).find('ARA_NM').text()}</td> <td>${$(this).find('COHIS_DIT_CD_NM').text()}</td> <td>${$(this).find('LN_YR').text()}</td> <td>${$(this).find('BTP_NM').text()}</td></tr>";
+				// empty() 필요한지 모르겠음. 위에 += 대신 = 쓰면 empty() 필요없음.
 				$('#info').empty().append(infoList);
+				// css 는 굳이 each 안에 없어도 되서 밖으로 빼자. 최종 1번만 수행.
 				$('tr:first').css('background', 'darkgray').css('color', 'white');
 			});
 		}

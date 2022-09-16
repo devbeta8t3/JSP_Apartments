@@ -8,8 +8,8 @@
 			//$("div").html("<button id='newButton'>ok</button>");
 			$.ajax({
 				type : "get", //전송타입
-				url : "./testDB.jsp",//서버요청대상파일
-				dataType : "text", //응답타입
+				url : "./testFile.jsp",//서버요청대상파일
+				dataType : "json", //응답타입
 				success : function(data, status, xhr) {
 					$("#result").text(data);
 				},

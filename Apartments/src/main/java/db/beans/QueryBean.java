@@ -123,7 +123,7 @@ public class QueryBean {
 		sb.append(" FROM ");
 		sb.append("   dongcode ");	//테이블명
 		sb.append(" WHERE ");
-		sb.append("   시군구명 = '"+siName+"' AND 시도명 = '"+doName+"' AND 읍면동명 IS NOT NULL ");
+		sb.append("   시군구명 = '"+siName+"' AND 시도명 = '"+doName+"' AND 읍면동명 IS NOT NULL AND 리명 IS NULL ");
 		sb.append(" ORDER BY");
 		sb.append("   읍면동명");
 

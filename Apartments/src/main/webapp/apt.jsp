@@ -1,3 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	String sessionId = (String) session.getAttribute("sessionId");
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -329,14 +335,21 @@
 	<h3 class="my-0 mr-md-auto font-weight-bold text-light">Apartments</h3>
 	<h6 class="my-0 mr-md-auto text-light font-italic"> Find your best apartment!</h6>
 	<nav class="my-2 my-md-0 mr-md-3">
-		<a class="p-2 text-light" href="#">아파트 찾기</a>
-		<a class="p-2 text-light" href="#">질문 게시판</a>
-		<!-- 로그인 시 보여지는 메뉴 : if sessionId != null 로 처리하자 ********************************todo -->
-		<a class="p-2 text-light" href="#">[xx]님 접속중!</a>
-		<a class="p-2 text-light" href="#">회원정보</a>
-		<!-- 로그인 아닐때 보여지는 메뉴 -->
- 		<a class="btn btn-primary mr-2" href="#">Log in</a>
- 		<a class="btn btn-danger" href="#">Sign up</a>
+		<a class="p-2 text-light" href="apt.jsp">아파트 찾기</a>
+		<a class="p-2 text-light mr-3" href="board.jsp">질문 게시판</a>
+		<c:choose>
+			<c:when test="${empty sessionId}">
+				<!-- 로그인 아닐때 보여지는 메뉴 -->
+ 				<a class="btn btn-primary mr-2" href="memberLogin.jsp">Log in</a>
+ 				<a class="btn btn-danger" href="memberSignup.jsp">Sign up</a>
+			</c:when>
+			<c:otherwise>
+				<!-- 로그인 시 보여지는 메뉴 : if sessionId != null 로 처리하자 -->
+				<a class="p-2 text-light" href="#">[<%= sessionId %>]님 접속중!</a>
+				<a class="p-2 text-light mr-2" href="memberUpdate.jsp">회원정보</a>
+				<a class="btn btn-warning" href="memberLogout.jsp">Log out</a>
+			</c:otherwise>
+		</c:choose>
 	</nav>
 </div>
 
@@ -493,112 +506,6 @@
 	</div>
 </div>
 
-
-<!-- 
-
-
-
-
-
-	Main Article
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-      
-      Main title bar
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h3 class="font-weight-bold">선택된 동 : <span id="selectedDo"></span><span id="selectedSi"><span id="selectedDong"></span></span></h3>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
-        </div>
-      </div>
-      <div>
-      국토교통부_공동주택 기본 정보제공 서비스 xml					>>> 활용신청 완료
-      https://www.data.go.kr/data/15058453/openapi.do
-      
-      국토교통부_공동주택 단지 목록제공 서비스 xml		
-      https://www.data.go.kr/data/15057332/openapi.do
-      </div>
-      	        
-      
-      
-      Main table
-      <h3 class="font-weight-bold">Sub title 표시</h3>
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>아파트명</th>
-              <th>주소</th>
-              <th>세대수</th>
-              <th>기타항목</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>data</td>
-              <td>rich</td>
-              <td>dashboard</td>
-              <td>tabular</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>information</td>
-              <td>placeholder</td>
-              <td>illustrative</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,004</td>
-              <td>text</td>
-              <td>random</td>
-              <td>layout</td>
-              <td>dashboard</td>
-            </tr>
-            <tr>
-              <td>1,005</td>
-              <td>dashboard</td>
-              <td>irrelevant</td>
-              <td>text</td>
-              <td>placeholder</td>
-            </tr>
-            <tr>
-              <td>1,006</td>
-              <td>dashboard</td>
-              <td>illustrative</td>
-              <td>rich</td>
-              <td>data</td>
-            </tr>
-            
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
-</div>
-	 -->
-	
 	<!-- Footer -->
     <footer>
 

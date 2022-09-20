@@ -38,9 +38,9 @@
 		
 		/* 시군구 이름을 가져오는 함수 */
 		function getSiData(doName) {	//json 요청
-			doValue = doName;
-			//const doName = document.getElementById("doSelect");	//시도명을 가져와서 저장 but, object HTMLSelectElement로 넘어옴.
-			//const doName = doSelect.options[doSelect.selectedIndex].value;
+			//const doName = document.getElementById("doSelect");	//시도명을 가져와서 저장 but, object HTMLSelectElement(객체)로 넘어옴. => onchange=getSidata(this.value)로 파라미터를 변경하여 해결
+			//const doName = doSelect.options[doSelect.selectedIndex].value;	// 객체로 넘어옴. => onchange=getSidata(this.value)로 파라미터를 변경하여 해결
+			doValue = doName;	// 도이름 전역변수에 저장
 			
 			createXHR(); // createXHR() 메소드 호출
 			
@@ -73,28 +73,13 @@
 					}
 					else {
 						for(let i=0; i<num; i++) {
-							//const dongCode = objRes.datas[i].법정동코드;
 							const siName = objRes.datas[i].시군구명;
-							//const user_id = objRes.datas[i].ID;
-							//const user_name = objRes.datas[i].NAME;
-							//const user_phone = objRes.datas[i].PHONE;
-							//const user_grade = objRes.datas[i].GRADE;
-							//const user_time = objRes.datas[i].WRITE_TIME;
 							res +="<option value='"+siName+"'>"+siName+"</option>";
-							//res +="<tr class='table-active'>";
-							//res +="<td>"+user_id+"</td>";
-							//res +="<td><br>"+user_name+"<br></td>";
-							//res +="<td><br>"+user_phone+"<br></td>";
-							//res +="<td><br>"+user_grade+"<br></td>";
-							//res +="<td><br>"+user_time+"<br></td>";
-							//res +="</tr>";
 						}
 					}
-					//res += "</table>";
 					
 					//alert(res);
 					document.getElementById("siSelect").innerHTML = res;
-					document.getElementById("selectedDo").innerHTML = doValue; 
 				}
 			}
 		}
@@ -102,8 +87,6 @@
 		/* 읍면동 이름을 가져오는 함수 */
 		function getDongData(siName) {	//json 요청
 			siValue = siName; 
-			//const doName = document.getElementById("doSelect").value;	//시도명을 가져와서 저장 but, object HTMLSelectElement로 넘어옴.
-			//const siName = siSelect.options[siSelect.selectedIndex].value;
 			
 			createXHR(); // createXHR() 메소드 호출
 			
@@ -138,22 +121,9 @@
 						for(let i=0; i<num; i++) {
 							const dongCode = objRes.datas[i].법정동코드;
 							const dongName = objRes.datas[i].읍면동명;
-							//const user_id = objRes.datas[i].ID;
-							//const user_name = objRes.datas[i].NAME;
-							//const user_phone = objRes.datas[i].PHONE;
-							//const user_grade = objRes.datas[i].GRADE;
-							//const user_time = objRes.datas[i].WRITE_TIME;
 							res +="<option value='"+dongCode+"'>"+dongName+"</option>";
-							//res +="<tr class='table-active'>";
-							//res +="<td>"+user_id+"</td>";
-							//res +="<td><br>"+user_name+"<br></td>";
-							//res +="<td><br>"+user_phone+"<br></td>";
-							//res +="<td><br>"+user_grade+"<br></td>";
-							//res +="<td><br>"+user_time+"<br></td>";
-							//res +="</tr>";
 						}
 					}
-					//res += "</table>";
 					
 					//alert(res);
 					document.getElementById("dongSelect").innerHTML = res;
@@ -163,7 +133,7 @@
 			}
 		}
 		
-		// 동 선택시 (select option value 값으로) 아파트 리스트 출력하는 함수 - ajax 사용
+		/* 동 선택시 (select option value 값으로) 아파트 리스트 출력하는 함수 - ajax 사용 */
 		$(function() {
 			$('#dongSelect').on("change", function() {
 				dongValue = $('#dongSelect option:selected').text();
@@ -178,8 +148,6 @@
 					dataType : "xml", //응답타입
 					success : function(result) {	//통신 성공시 호출하는 함수
 						//alert("동선택 요청에 의한 응답값 : " +result);	// [object XMLDocument]로 넘어온거 확인 (완료)
-						//$('#selectedDong').html("-동이름왜안붙어");	//****************************************************** todo
-						//alert('동이름 붙었나?');	// 
 						xmlParsing(result);	// 가독성 위해 따로 작성
 					},
 					error : function(xhr, status, msg) {	// 통신 실패시 호출하는 함수
@@ -196,22 +164,19 @@
 					
 					$(data).find("item").each(function(){	// item 태그 단위로 각각 아래 내용을 실행
 						//alert($(this).find('kaptName').text());	// 아파트 목록 넘어오는거 확인 (완료)
-						//infoList = "<tr><td>"+$(this).find('kaptName').text()+"</td><td>"+$(this).find('kaptCode').text()+"</td><td>"+$(this).find('bjdCode').text()+"</td></tr>";
 						aptList += "<a href='#' value='"+$(this).find('kaptCode').text()+"' class='list-group-item list-group-item-action border-success'>"+$(this).find('kaptName').text()+"</a>";
-						//aptList += "<li value='"+$(this).find('kaptCode').text()+"'>"+$(this).find('kaptName').text()+"</li>";
 						
 					});
 					$('#aptListShown').empty().append(aptList);	// id가 aptListShown인 영역에 aptList 내용 추가
-					//$('tr:first').css('background', 'darkgray').css('color', 'white'); // 동작 확인 (완료)
 					
 				}
 			});
 		});
 		
-		// 아파트 선택시 상세 정보 출력하는 함수 - ajax 사용
+		/* 아파트 선택시 상세 정보 출력하는 함수 - ajax 사용 */
 		$(function() {
 			//$('#aptListShown').on("click", 'a', function() {	// 해당 문법은 dynamically created elements에서 동작하지 않는다? https://stackoverflow.com/questions/32780644/selector-to-click-on-div-loaded-with-ajax-jquery
-			$(document).on('click', '#aptListShown a', function(){	// 값 넘어옴 (완료) ************************************* toto 이거 공부하기
+			$(document).on('click', '#aptListShown a', function(){	// 값 넘어옴 (완료) ************************************* toto 이거 공부하기 $(document) vs $(선택자)
 					
 				alert('aptlist->클릭 인식'); 	// 아파트 이름 확인 (완료)
 				//let kaptCode = $(this).val();	// 아파트 선택시 value(아파트코드)를 저장	// 값 안넘어옴
@@ -240,10 +205,9 @@
 					//alert("Info 파싱 함수로 넘어온 데이터 : " +data);	// [object XMLDocument]로 넘어온거 확인 (완료)	
 					
 					//$(data).find("item").each(function(){	// item 태그 단위로 각각 아래 내용을 실행
-						//alert($(this).find('kaptName').text());	// 아파트 목록 넘어오는거 확인 (완료)
+						//alert($(this).find('kaptName').text());	// 아파트 목록 넘어오는거 확인
 						//infoList = "<tr><td>"+$(this).find('kaptName').text()+"</td><td>"+$(this).find('kaptCode').text()+"</td><td>"+$(this).find('bjdCode').text()+"</td></tr>";
 						//aptList += "<a href='#' value='"+$(this).find('kaptCode').text()+"' class='list-group-item list-group-item-action border-success'>"+$(this).find('kaptName').text()+"</a>";
-						
 					//});
 					
 					let apartName = $(data).find('kaptName').text();		// 단지명
@@ -345,9 +309,9 @@
 			</c:when>
 			<c:otherwise>
 				<!-- 로그인 시 보여지는 메뉴 : if sessionId != null 로 처리하자 -->
-				<a class="p-2 text-light" href="#">[<%= sessionId %>]님 접속중!</a>
-				<a class="p-2 text-light mr-2" href="memberUpdate.jsp">회원정보</a>
-				<a class="btn btn-warning" href="memberLogout.jsp">Log out</a>
+				<span class="p-2 text-warning" href="#">[<%= sessionId %>]님 접속중</span>
+				<a class="p-2 text-warning mr-2" href="memberUpdate.jsp">회원정보</a>
+				<a class="btn btn-info" href="memberLogout.jsp">Log out</a>
 			</c:otherwise>
 		</c:choose>
 	</nav>

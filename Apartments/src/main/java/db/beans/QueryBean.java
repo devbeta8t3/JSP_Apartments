@@ -47,6 +47,11 @@ public class QueryBean {
 		}
 	}
 
+	// (참고용 메소드 코드)
+	/**
+	 * 사용자 ID를 검색하여 사용자 아이디, 이름, 전화번호, 등급, 작성시각을 ArrayList로 리턴하는 함수 
+	 * @return (ArrayList) res 
+	 */
 //	public ArrayList getUserInfo(String user_id) throws Exception {
 //
 //		StringBuffer sb = new StringBuffer();
@@ -77,7 +82,7 @@ public class QueryBean {
 //	}
 	
 	/**
-	 * 선택된 도이름으로 시군구 이름을 ArrayList res에 저장하는 메소드 
+	 * 선택된 도이름으로 시군구 이름을 ArrayList로 리턴하는 메소드 
 	 * @param doName : select id="doSelect"에서 선택된 value
 	 * @return (ArrayList) res : 시군구 리스트
 	 * @throws Exception
@@ -109,7 +114,7 @@ public class QueryBean {
 	}
 
 	/**
-	 * 선택된 시군구 이름으로 읍면동 이름을 ArrayList res에 저장하는 메소드 
+	 * 선택된 시군구 이름으로 읍면동 이름을 ArrayList로 리턴하는 메소드 
 	 * @param doName
 	 * @return ArrayList res
 	 * @throws Exception

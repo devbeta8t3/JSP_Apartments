@@ -3,6 +3,7 @@
 <%@ page contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <jsp:useBean id="QueryBean" scope="page" class="db.beans.QueryBean" />
 <jsp:setProperty property="*" name="QueryBean" />
+
 <%
 	response.setHeader("Cache-Control", "no-store");
 	response.setHeader("pragma", "no-cache");

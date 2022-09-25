@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-	String sessionId = (String) session.getAttribute("sessionId");
-%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,13 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    
-	<!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
-    
-    
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -178,10 +168,10 @@
 			//$('#aptListShown').on("click", 'a', function() {	// 해당 문법은 dynamically created elements에서 동작하지 않는다? https://stackoverflow.com/questions/32780644/selector-to-click-on-div-loaded-with-ajax-jquery
 			$(document).on('click', '#aptListShown a', function(){	// 값 넘어옴 (완료) ************************************* toto 이거 공부하기 $(document) vs $(선택자)
 					
-				alert('aptlist->클릭 인식'); 	// 아파트 이름 확인 (완료)
+				//alert('aptlist->클릭 인식'); 	// 아파트 이름 확인 (완료)
 				//let kaptCode = $(this).val();	// 아파트 선택시 value(아파트코드)를 저장	// 값 안넘어옴
 				let kaptCode = $(this).attr('value');	// 값 넘어옴 (완료) *********************************************** todo 이거 공부하기 val() VS attr('value')
-				alert('클릭한 아파트의 value(kaptCode) : '+kaptCode)	
+				//alert('클릭한 아파트의 value(kaptCode) : '+kaptCode)	
 				const key = "SsuVC2eM0t4fh8sGbUPY4DPOtZDBa4o41nCmhRT6pMn2vl%2BSqtlnLsdmzCwdPBA35zxuFbhlcOy43R4X3ZffQA%3D%3D"; 
 					
 				$.ajax({
@@ -211,7 +201,7 @@
 					//});
 					
 					let apartName = $(data).find('kaptName').text();		// 단지명
-					alert("파싱한 단지명(kaptName) 값 : " +apartName);	// 파싱되는지 확인
+					//alert("파싱한 단지명(kaptName) 값 : " +apartName);	// 파싱되는지 확인
 					aptValue = apartName; // 전역변수에 저장
 					let mgr = $(data).find('codeMgr').text();				// 관리 방식
 					let mgrCnt = $(data).find('kaptMgrCnt').text();			// 관리 인원
@@ -289,33 +279,23 @@
 		
 	</script>
         
+    <style type="text/css">
+		.category, .card-header, #apartName {
+			font-family: BMJUA;
+		}
+		.aptInfo {
+		width: 270px}
+	</style>
+	
+	
     <title>Apartments - Find your best apartment!</title>
 </head>
 
 <body>
 
 <!-- Upper Navbar -->
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark border-bottom shadow-sm sticky-top">
-	<h3 class="my-0 mr-md-auto font-weight-bold text-light">Apartments</h3>
-	<h6 class="my-0 mr-md-auto text-light font-italic"> Find your best apartment!</h6>
-	<nav class="my-2 my-md-0 mr-md-3">
-		<a class="p-2 text-light" href="apt.jsp">아파트 찾기</a>
-		<a class="p-2 text-light mr-3" href="board.jsp">질문 게시판</a>
-		<c:choose>
-			<c:when test="${empty sessionId}">
-				<!-- 로그인 아닐때 보여지는 메뉴 -->
- 				<a class="btn btn-primary mr-2" href="memberLogin.jsp">Log in</a>
- 				<a class="btn btn-danger" href="memberSignup.jsp">Sign up</a>
-			</c:when>
-			<c:otherwise>
-				<!-- 로그인 시 보여지는 메뉴 : if sessionId != null 로 처리하자 -->
-				<span class="p-2 text-warning" href="#">[<%= sessionId %>]님 접속중</span>
-				<a class="p-2 text-warning mr-2" href="memberUpdate.jsp">회원정보</a>
-				<a class="btn btn-info" href="memberLogout.jsp">Log out</a>
-			</c:otherwise>
-		</c:choose>
-	</nav>
-</div>
+<jsp:include page="upperBar.jsp"></jsp:include>
+
 
 <!-- Middle Section -->
 <div class="container-fluid">
@@ -324,7 +304,7 @@
 		<div class="col-sm-12 col-md-6 col-lg-2 bg-light px-1">
 			<form>
 				<div class="form-group">
-					<button type="button" class="btn btn-warning btn-lg btn-block mt-1 mb-1 font-weight-bold">Select Location</button>
+					<button type="button" class="btn btn-warning btn-lg btn-block mt-1 mb-1 category">지역 선택</button>
 					<div class="card border-warning mb-3" style="max-width: 20rem;">
 						<div class="card-header text-center">지역을 선택하세요.</div>
 						  <div class="card-body">
@@ -357,11 +337,15 @@
 							<!-- 시군구 선택(자동) -->
 							<p>
 							<label for="siSelect" class="form-label mt-4"><span class="badge badge-pill badge-warning">시/군/구</span></label><br/>
-							<select class="form-select" id="siSelect" onchange="getDongData(this.value)"></select>
+							<select class="form-select" id="siSelect" onchange="getDongData(this.value)">
+								<option>↑ 광역지자체를 선택하세요 ↑</option>
+							</select>
 							<!-- 읍면동 선택(자동) -->
 							<p>
-							<label for="dongSelect" class="form-label mt-4"><span class="badge badge-pill badge-warning">읍면동</span></label><br/>
-							<select class="form-select" id="dongSelect" ></select>
+							<label for="dongSelect" class="form-label mt-4"><span class="badge badge-pill badge-warning">읍/면/동</span></label><br/>
+							<select class="form-select" id="dongSelect" >
+								<option>↑↑ 시/군/구를 선택하세요 ↑↑</option>
+							</select>
 						  </div>
 					</div>
 				</div> 
@@ -371,7 +355,7 @@
 		
 		<!-- Apt List Bar -->
 		<div class="col-sm-12 col-md-6 col-lg-2 bg-light px-1">
-			<button type="button" class="btn btn-success btn-lg btn-block mt-1 mb-1 font-weight-bold">Apartment List</button>
+			<button type="button" class="btn btn-success btn-lg btn-block mt-1 mb-1 category">아파트 목록</button>
 			<!-- 아파트 리스트 삽입 (AJAX) -->
 			<div class="list-group" id="aptListShown">
 				<img src="apartment1.png" class="mt-5" />
@@ -380,19 +364,50 @@
 		
 		<!-- Apt Contents -->
 		<div class="col-sm-12 col-md-12 col-lg-8 bg-light px-1">
-			<button type="button" class="btn btn-secondary btn-lg mt-1 mb-1 font-weight-bold active">Apartment Infomation</button>
+			<button type="button" class="btn btn-secondary btn-lg mt-1 mb-1 active aptInfo category">아파트 정보</button>
 			<div class="card border-secondary">
 			  <div class="card-body">
 			    <h4 class="card-title">
-			    	<span id="apartName" class="font-weight-bold mr-3">아파트명</span>
-			    	<button class="btn btn-sm btn-success" onclick="searchNaverMap();"><span class="h6 font-weight-bold">N</span> 네이버 지도 검색 <img src="openNewWindowWhite.png" style="width:17px"></button>
+			    	<span id="apartName" class="mr-3">아파트명</span>
+			    	<button class="btn btn-sm btn-success" onclick="searchNaverMap();"><span class="h6 font-weight-bold">N</span> 지도 검색 <img src="openNewWindowWhite.png" style="width:17px"></button>
 			    </h4><hr/>
 			    <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
 			    
 			    <div class="row justify-content-around">
+			    
+			    	<div class="col-sm-6 col-md-4 col-lg-4">
+						<div class="card border-primary mb-3 mx-auto" style="max-width: 20rem;">
+						  <div class="card-header ">주변 환경</div>
+						  <div class="card-body">
+						    <p class="card-text"><span class="badge bg-primary text-white mr-2">편의시설</span><span id="convFac"></span></p>
+							<p class="card-text"><span class="badge bg-primary text-white mr-2">교육시설</span><span id="eduFac"></span></p>
+						  </div>
+						</div>
+					</div>
+			    	<div class="col-sm-6 col-md-4 col-lg-4">
+						<div class="card border-danger mb-3 mx-auto" style="max-width: 20rem;">
+						  <div class="card-header ">대중교통</div>
+						  <div class="card-body">
+						    <p class="card-text"><span class="badge bg-danger text-white mr-2">버스정류장 도보거리</span><span id="walkTimeBus"></span></p>
+							<p class="card-text"><span class="badge bg-danger text-white mr-2">지하철 호선</span><span id="subwayLine"></span></p>
+							<p class="card-text"><span class="badge bg-danger text-white mr-2">지하철 역명</span><span id="subwayStation"></span></p>
+							<p class="card-text"><span class="badge bg-danger text-white mr-2">지하철 도보거리</span><span id="walkTimeSub"></span></p>
+						  </div>
+						</div>
+					</div>
+			    	<div class="col-sm-6 col-md-4 col-lg-4">
+						<div class="card bg-light mb-3" style="max-width: 20rem;">
+						  <div class="card-header ">부대복리시설/기타</div>
+						  <div class="card-body">
+						    <p class="card-text"><span class="badge bg-info text-white mr-2">부대/복리시설</span><span id="walfFac"></span></p>
+							<p class="card-text"><span class="badge bg-info text-white mr-2">급수 방식</span><span id="waterSupply"></span></p>
+							<p class="card-text"><span class="badge bg-info text-white mr-2">음식물 처리</span><span id="gabage"></span></p>
+						  </div>
+						</div>
+					</div>
 			    	<div class="col-sm-6 col-md-4 col-lg-3">
 			    		<div class="card bg-light mb-3 mx-auto" style="max-width: 15rem;">
-						  <div class="card-header font-weight-bold">아파트 일반관리</div>
+						  <div class="card-header ">아파트 일반관리</div>
 						  <div class="card-body">
 						    <!-- <h4 class="card-title">Light card title</h4> -->
 						    <p class="card-text"><span class="badge bg-primary text-white mr-2">관리 방식</span><span id="mgr"></span></p>
@@ -403,7 +418,7 @@
 			    	</div>
 			    	<div class="col-sm-6 col-md-4 col-lg-3">
 			    		<div class="card bg-light mb-3 mx-auto" style="max-width: 15rem;">
-						  <div class="card-header font-weight-bold">아파트 경비관리</div>
+						  <div class="card-header ">아파트 경비관리</div>
 						  <div class="card-body">
 						    <!-- <h4 class="card-title">Light card title</h4> -->
 						    <p class="card-text"><span class="badge bg-dark text-white mr-2">경비 방식</span><span id="sec"></span></p>
@@ -414,7 +429,7 @@
 			    	</div>
 			    	<div class="col-sm-6 col-md-4 col-lg-3">
 						<div class="card bg-light mb-3 mx-auto" style="max-width: 15rem;">
-						  <div class="card-header font-weight-bold">아파트 청소관리</div>
+						  <div class="card-header ">아파트 청소관리</div>
 						  <div class="card-body">
 						    <p class="card-text"><span class="badge bg-success text-white mr-2">청소 방식</span><span id="clean"></span></p>
 							<p class="card-text"><span class="badge bg-success text-white mr-2">청소 인원</span><span id="cleanCnt"></span></p>
@@ -423,7 +438,7 @@
 					</div>
 			    	<div class="col-sm-6 col-md-4 col-lg-3">
 						<div class="card bg-light mb-3 mx-auto" style="max-width: 15rem;">
-						  <div class="card-header font-weight-bold">주차/승강기/CCTV</div>
+						  <div class="card-header ">주차/승강기/CCTV</div>
 						  <div class="card-body">
 						    <p class="card-text"><span class="badge bg-warning mr-2">주차 대수(지상)</span><span id="parkCnt"></span></p>
 							<p class="card-text"><span class="badge bg-warning mr-2">주차 대수(지하)</span><span id="parkCntu"></span></p>
@@ -433,36 +448,7 @@
 						  </div>
 						</div>
 					</div>
-			    	<div class="col-sm-6 col-md-4 col-lg-4">
-						<div class="card bg-light mb-3" style="max-width: 20rem;">
-						  <div class="card-header font-weight-bold">부대복리시설/기타</div>
-						  <div class="card-body">
-						    <p class="card-text"><span class="badge bg-info text-white mr-2">부대/복리시설</span><span id="walfFac"></span></p>
-							<p class="card-text"><span class="badge bg-info text-white mr-2">급수 방식</span><span id="waterSupply"></span></p>
-							<p class="card-text"><span class="badge bg-info text-white mr-2">음식물 처리</span><span id="gabage"></span></p>
-						  </div>
-						</div>
-					</div>
-			    	<div class="col-sm-6 col-md-4 col-lg-4">
-						<div class="card border-danger mb-3 mx-auto" style="max-width: 20rem;">
-						  <div class="card-header font-weight-bold">대중교통</div>
-						  <div class="card-body">
-						    <p class="card-text"><span class="badge bg-danger text-white mr-2">버스정류장 도보거리</span><span id="walkTimeBus"></span></p>
-							<p class="card-text"><span class="badge bg-danger text-white mr-2">지하철 호선</span><span id="subwayLine"></span></p>
-							<p class="card-text"><span class="badge bg-danger text-white mr-2">지하철 역명</span><span id="subwayStation"></span></p>
-							<p class="card-text"><span class="badge bg-danger text-white mr-2">지하철 도보거리</span><span id="walkTimeSub"></span></p>
-						  </div>
-						</div>
-					</div>
-			    	<div class="col-sm-6 col-md-4 col-lg-4">
-						<div class="card border-primary mb-3 mx-auto" style="max-width: 20rem;">
-						  <div class="card-header font-weight-bold">주변 환경</div>
-						  <div class="card-body">
-						    <p class="card-text"><span class="badge bg-primary text-white mr-2">편의시설</span><span id="convFac"></span></p>
-							<p class="card-text"><span class="badge bg-primary text-white mr-2">교육시설</span><span id="eduFac"></span></p>
-						  </div>
-						</div>
-					</div>
+			    	
 			    </div>
 			  </div>
 			</div>

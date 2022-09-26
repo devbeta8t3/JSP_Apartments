@@ -117,15 +117,17 @@
 					</select> <input type="text" name="birthdd" maxlength="2" placeholder="일" size="4" value="${day}">
 				</div>
 			</div>
-			<div class="form-group  row ">
+			<div class="form-group row ">
 				<label class="col-sm-2">이메일</label>
 				<div class="col-sm-10">
-					<input type="text" name="mail1" maxlength="50" value="${mail1}">@
-					<select name="mail2" id="mail2">
+					<input type="text" name="mail1" maxlength="50" value="${mail1}"> @ 
+					<select class="form-select" name="mail2" id="mail2">
 						<option>naver.com</option>
 						<option>daum.net</option>
 						<option>gmail.com</option>
 						<option>nate.com</option>
+						<option>hanmail.net</option>
+						<option>yahoo.com</option>
 					</select>
 				</div>
 			</div>

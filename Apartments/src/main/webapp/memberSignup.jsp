@@ -7,11 +7,26 @@
 <head>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<style type="text/css">
+		body{
+			margin: 0;
+			padding: 0;
+			background: url(bg_apt2.jpg) no-repeat;
+			height: 100vh;
+			/* font-family: sans-serif; */
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			overflow: hidden
+		}
+		@media screen and (max-width: 600px;){body{background-size: cover;: fixed}}
 		.jumbotron{
 			font-family: BMJUA;
 		}
 		form {
 			font-family: BMJUA;
+		}
+		.formRadius{
+			border-radius: 20px;
 		}
 	</style>
 
@@ -45,13 +60,13 @@
 	
 	<jsp:include page="upperBar.jsp"></jsp:include>
 	
-	<div class="jumbotron">
-		<div class="container">
-			<h1 class="display-3">회원 가입</h1>
+	<div class="jumbotron bg-success bg-opacity-25">
+		<div class="container ">
+			<h1 class="display-3 ">회원 가입</h1>
 		</div>
 	</div>
 
-	<div class="container">
+	<div class="container bg-warning pt-4 pb-2 formRadius">
 		<form name="newMember" class="form-horizontal"  action="memberSignupProcess.jsp" method="post" onsubmit="return checkForm()">
 			<div class="form-group  row">
 				<label class="col-sm-2 ">아이디</label>
@@ -108,15 +123,17 @@
 					</select> <input type="text" name="birthdd" maxlength="2" placeholder="일" size="4">
 				</div>
 			</div>
-			<div class="form-group  row ">
+			<div class="form-group row ">
 				<label class="col-sm-2">이메일</label>
 				<div class="col-sm-10">
-					<input type="text" name="mail1" maxlength="50">@ 
-					<select name="mail2">
+					<input type="text" name="mail1" maxlength="50"> @ 
+					<select class="form-select" name="mail2">
 						<option>naver.com</option>
 						<option>daum.net</option>
 						<option>gmail.com</option>
 						<option>nate.com</option>
+						<option>hanmail.net</option>
+						<option>yahoo.com</option>
 					</select>
 				</div>				
 			</div>
@@ -124,7 +141,6 @@
 				<label class="col-sm-2">전화번호</label>
 				<div class="col-sm-3">
 					<input name="phone" type="text" class="form-control" placeholder="000-0000-0000" >
-
 				</div>
 			</div>
 			<div class="form-group  row">
